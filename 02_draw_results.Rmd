@@ -1,0 +1,76 @@
+---
+title: "Raffle draw results"
+author: "@meganabaker on github"
+date: "2025-03-13"
+output: html_document
+---
+
+## Read in data
+
+```{r}
+readpath <- "C:/Users/megan/Documents/Programming/Raffle project/"
+writepath <- paste0(readpath, "out/")
+
+#load
+load(paste0(writepath, "cleaned_raffle.RData"))
+```
+
+## Define draw function
+
+```{r define-function}
+
+draw_winning_tix <- function(dataset, number_of_winners){
+  #set seed for reproducibility of final results
+  set.seed(20250220)
+  
+  prize_name <- dataset$Ticket.Name[1]
+  
+  #sample winners for each type of prize
+  winners <- dataset[sample(nrow(dataset), size = number_of_winners, replace = F), ]
+  
+  #begin announcement
+  print(paste0("The winner(s) of ", prize_name, " is/are:"))
+  
+  #add some drama to the reveal
+  Sys.sleep(runif(1)*10)
+  
+  if (number_of_winners > 1){
+    for (i in 1:number_of_winners){
+      print(paste0(winners$Attendee.First.Name[i], " ", winners$Attendee.Last.Name[i]))
+      
+      #add some more drama to the reveal
+      Sys.sleep(runif(1)*10)
+    }
+  }
+  else{
+    print(paste0(winners$Attendee.First.Name[1], " ", winners$Attendee.Last.Name[1]))
+  }
+}
+```
+
+## Call raffles in order we want, with number of winners we want
+
+Running interactively produces results with flair, knitting produces html documentation. With seed set, both results will be the same.
+
+```{r}
+draw_winning_tix(prize_book[["Bordeaux Wine Tasting"]], 1)
+
+draw_winning_tix(prize_book[["6 Hours of Kid Free Time"]], 1)
+
+draw_winning_tix(prize_book[["Photoshoot"]], 1)
+
+draw_winning_tix(prize_book[["Old Town Sailing Trip"]], 1)
+
+draw_winning_tix(prize_book[["Indian Cooking Fundamentals"]], 1)
+
+draw_winning_tix(prize_book[["National's Game Tickets"]], 4)
+
+draw_winning_tix(prize_book[["Private Yoga Class"]], 1)
+
+draw_winning_tix(prize_book[["Balian Spa Day"]], 1)
+
+draw_winning_tix(prize_book[["Meta Quest"]], 1)
+
+draw_winning_tix(prize_book[["Custom Charcuterie Board"]], 1)
+```
+
